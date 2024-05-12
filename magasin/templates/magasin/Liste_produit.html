@@ -1,0 +1,24 @@
+{% extends 'magasin/base.html' %}
+
+{% block content %} 
+<div class="container">
+    <h1 class="card-title text-center" style="color: rgb(85, 3, 66);">Liste des Produits</h1> <br>
+    <a href="{% url 'magasin:prod' %}" class="btn btn-outline-success">Ajouter</a> <br><br>
+
+    <div class="row">
+        {% for produit in produits %}
+            <div class="col-md-4 mb-4">
+                <div class="card">
+                    <img src='/media/{{ produit.img }}' class="card-img-top" alt="{{ produit.libellé }}">
+                    <div class="card-body">
+                        <h5 class="card-title">{{ produit.libellé }}</h5>
+                        <p class="card-text">Prix: {{ produit.prix }}</p>
+                        <a href="{% url 'magasin:modifier_produit' produit.pk %}" class="btn btn-outline-primary">Modifier</a>
+                        <a href="{% url 'magasin:supprimer_produit' produit.pk %}" class="btn btn-outline-danger">Supprimer</a>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

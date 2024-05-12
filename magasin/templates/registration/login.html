@@ -1,0 +1,35 @@
+{% extends "magasin/base.html" %}
+{% block content %}
+<div class="container">
+    <div class="row py-5 mt-4 align-items-center">
+        <div class="col-md-5 pr-lg-5 mb-5 mb-md-0">
+            <img src="/static/images/log.jpg" alt="" class="img-fluid mb-3 d-none d-md-block">
+           
+           
+        </div>
+
+        <!-- Formulaire de connexion -->
+        <div class="col-md-7 col-lg-6 ml-auto">
+            <h2  style="color: rgb(85, 3, 66);">Se connecter</h2> <br>
+
+            <form method="post">
+                {% csrf_token %}
+                {% if form.non_field_errors %}
+                {% for error in form.non_field_errors %}
+                <p class="alert alert-danger">{{ error }}</p>
+                {% endfor %}
+                {% endif %}
+                {% for field in form %}
+                <div class="form-group">
+                    {{ field.label_tag }}
+                    {{ field }}
+                </div>
+                {% endfor %}
+                <br><button type="submit" class="btn btn-outline-success">Se connecter</button> <br>
+            </form>
+            <p class="font-italic text-muted mt-3">Pas encore inscrit.e? <a href="{% url 'magasin:register' %}" class="text-primary">S'inscrire</a></p>
+            <p class="font-italic text-muted">Mot de passe oublié ? <a href="{% url 'password_reset_done' %}" class="text-danger">Renouveler mon mot de passe</a></p>
+        </div>
+    </div>
+</div>
+{% endblock %}

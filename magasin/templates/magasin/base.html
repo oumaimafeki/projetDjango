@@ -1,0 +1,79 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset='utf-8'>
+	<meta http-equiv='X-UA-Compatible' content='IE=edge'>
+	<title>
+		{% block title %} {% endblock %}
+	</title>
+	<link rel='stylesheet' type='text/css' media='screen' href="{% static 'css/base.css' %}">
+	{% block styles %}
+  	<link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
+  	<link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.7.0/font/bootstrap-icons.min.css" rel="stylesheet">
+  	<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+	{% endblock %}
+</head>
+<body>
+	{% block body %} 
+    <nav class="navbar navbar-expand-lg " style="background-color: rgb(222, 173, 249);">
+        <div class="container-fluid">
+          <a class="navbar-brand" href="{% url 'magasin:cat' %}"> <img src="{% static 'images/logo.jpg' %}" width="50" height="50"/>
+            Commerce Electronique</a>
+          
+          <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+              
+              <li class="nav-item">
+                <a class="nav-link active" aria-current="page" href="{% url 'magasin:catalogue' %}">CATALOGUE</a>
+              </li>
+             
+            
+              {% if user.is_authenticated %}
+              <li class="nav-item">
+                <a class="nav-link" href="{% url 'magasin:fournisseur'  %}">FOURNISSEUR</a>
+              </li>
+              <!-- <li class="nav-item">
+                <a class="nav-link" href="{% url 'magasin:prod' %}">PRODUITS</a>
+              </li> -->
+              <li class="nav-item">
+                <a class="nav-link" href="{% url 'magasin:commande' %}">COMMANDE</a>
+              </li>
+                
+              
+              <li class="nav-item">
+                <a class="nav-link" href="{% url 'magasin:liste_produits' %}">lISTE_PRODUITS</a>
+            </li>
+                <li class="nav-item active">
+                  <a class="nav-link" href="#">{{ user.username }},</a>
+                </li>
+                <li class="nav-item active">
+                  <a class="nav-link" href="{% url 'magasin:logout' %}">DECONNEXION</a>
+                </li>
+                <a href="{% url 'magasin:edite_profile' %}" class="nav-link">Edit Profile</a>
+              {% else %}
+                <li class="nav-item active">
+                  <a class="nav-link" href="{% url 'login' %}">CONNEXION</a>
+                </li>
+                <li class="nav-item active">
+                  <a class="nav-link"  href="{% url 'magasin:register' %}">INSCRIPTION</a>
+                </li>
+
+              {% endif %}
+            </ul>       
+          </div>
+        </div>
+      </nav><br><br>
+      {% endblock %}
+      {% block content %}{% if messages %}
+      <div class="container">
+          {% for message in messages %}
+          <div class="alert alert-success alert-dismissible fade show" role="alert">
+              {{ message }}
+              <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+          </div>
+          {% endfor %}
+      </div>
+      {% endif %}{% endblock %}
+</body>
+</html>

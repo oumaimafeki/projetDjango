@@ -1,0 +1,75 @@
+{% extends 'magasin/base.html' %}
+{% load static %}
+{% block content %}
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="box">
+                <form method="GET" class="d-flex">
+                    <input type="text" class="form-control me-2" name="q" placeholder="Rechercher...">
+                    <button type="submit" class="btn btn-outline-success"><i class="bi bi-search"></i> Rechercher</button>
+                    <!-- Affichage du nombre de produits dans le panier -->
+                    <button type="button" class="btn btn-dark ms-2" id="panier-btn"><i class="bi bi-cart-fill"></i> Panier <span id="panier-count">0</span></button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<br>
+<div class="container">
+    <form method='POST' class="post-form">
+        {% csrf_token %}
+        <div class="row row-cols-1 row-cols-md-5 g-4">
+            {% for article in list %}
+            <div class="col">
+                <div class="card" style="border: 2px solid blueviolet;">
+                    <img src='/media/{{ article.img }}' class="card-img-top" alt="{{ article.libelle }}">
+                    <div class="card-body">
+                        <hr>
+                        <h5 class="card-title">{{ article.libellé }}</h5>
+                        <p class="card-text">{{ article.prix }} DT.</p>
+                        <!-- Formulaire pour ajouter au panier -->
+                        <form action="#" method="post" class="ajouter-au-panier-form">
+                            {% csrf_token %}
+                            <button type="submit" class="btn btn-dark">Ajouter au panier</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </form> 
+</div>
+
+<script>
+    // Fonction d'initialisation
+    document.addEventListener("DOMContentLoaded", function() {
+        // Sélectionner le bouton du panier et le compteur
+        const panierBtn = document.getElementById('panier-btn');
+        const panierCountDisplay = document.getElementById('panier-count');
+        
+        // Initialiser le compteur de panier
+        let panierCount = 0;
+
+        // Écouter les soumissions de formulaire d'ajout au panier
+        const forms = document.querySelectorAll('.ajouter-au-panier-form');
+        forms.forEach(form => {
+            form.addEventListener('submit', async function(event) {
+                event.preventDefault();
+                // Effectuer une requête POST pour ajouter l'article au panier
+                const response = await fetch(form.action, {
+                    method: 'POST',
+                    body: new FormData(form),
+                });
+                if (response.ok) {
+                    // Augmenter le compteur de panier
+                    panierCount++;
+                    // Mettre à jour l'affichage du compteur de panier
+                    panierCountDisplay.innerText = panierCount;
+                }
+            });
+        });
+    });
+</script>
+{% endblock %}
